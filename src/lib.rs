@@ -5,10 +5,39 @@ use sauron::{
 use web_sys::{HtmlImageElement, window};
 use wasm_bindgen::closure::Closure;
 use wasm_bindgen::JsCast;
-use std::rc::Rc;
-use std::cell::RefCell;
 
 mod styles;
+
+#[derive(Debug, Clone, PartialEq)]
+enum Route {
+    Home,
+    Counter,
+    Cats,
+    About,
+    NotFound,
+}
+
+impl Route {
+    fn from_path(path: &str) -> Self {
+        match path {
+            "/" | "" => Route::Home,
+            "/counter" => Route::Counter,
+            "/cats" => Route::Cats,
+            "/about" => Route::About,
+            _ => Route::NotFound,
+        }
+    }
+    
+    fn to_path(&self) -> &'static str {
+        match self {
+            Route::Home => "/",
+            Route::Counter => "/counter",
+            Route::Cats => "/cats",
+            Route::About => "/about",
+            Route::NotFound => "/404",
+        }
+    }
+}
 
 enum Msg {
     Increment,
@@ -23,6 +52,8 @@ enum Msg {
     AllImagesLoaded,
     NextBatchImageLoaded,
     NextBatchComplete,
+    NavigateTo(Route),
+    UrlChanged(Route),
 }
 
 struct App {
@@ -36,10 +67,12 @@ struct App {
     total_cats_ever_loaded: usize,
     next_batch_urls: Vec<String>,
     next_batch_loaded_count: usize,
+    current_route: Route,
 }
 
 impl App {
     fn new() -> Self {
+        let initial_route = Self::get_current_route();
         App { 
             count: 0.0, 
             cat_urls: Vec::new(), 
@@ -51,6 +84,27 @@ impl App {
             total_cats_ever_loaded: 0,
             next_batch_urls: Vec::new(),
             next_batch_loaded_count: 0,
+            current_route: initial_route,
+        }
+    }
+    
+    fn get_current_route() -> Route {
+        if let Some(window) = window() {
+            let location = window.location();
+            if let Ok(pathname) = location.pathname() {
+                return Route::from_path(&pathname);
+            }
+        }
+        Route::Home
+    }
+    
+    fn navigate_to(&self, route: Route) {
+        if let Some(window) = window() {
+            if let Ok(history) = window.history() {
+                let path = route.to_path();
+                let _ = history.push_state_with_url(&wasm_bindgen::JsValue::NULL, "", Some(path));
+                console::log_1(&format!("Navigated to: {}", path).into());
+            }
         }
     }
     
@@ -166,14 +220,67 @@ impl App {
             }
         }
     }
-}
-
-impl Application for App {
-    type MSG = Msg;
-
-    fn view(&self) -> Node<Msg> {
+    
+    fn render_navigation(&self) -> Node<Msg> {
         node! {
-            <main>
+            <nav style="background: #333; padding: 15px; margin-bottom: 20px;">
+                <div style="display: flex; gap: 20px; justify-content: center;">
+                    <button class={if self.current_route == Route::Home { "nav-button active" } else { "nav-button" }}
+                        on_click=|_| Msg::NavigateTo(Route::Home)>
+                        {text("Home")}
+                    </button>
+                    <button class={if self.current_route == Route::Counter { "nav-button active" } else { "nav-button" }}
+                        on_click=|_| Msg::NavigateTo(Route::Counter)>
+                        {text("Counter")}
+                    </button>
+                    <button class={if self.current_route == Route::Cats { "nav-button active" } else { "nav-button" }}
+                        on_click=|_| Msg::NavigateTo(Route::Cats)>
+                        {text("Cats")}
+                    </button>
+                    <button class={if self.current_route == Route::About { "nav-button active" } else { "nav-button" }}
+                        on_click=|_| Msg::NavigateTo(Route::About)>
+                        {text("About")}
+                    </button>
+                </div>
+            </nav>
+        }
+    }
+    
+    fn render_current_page(&self) -> Node<Msg> {
+        match self.current_route {
+            Route::Home => self.render_home_page(),
+            Route::Counter => self.render_counter_page(),
+            Route::Cats => self.render_cats_page(),
+            Route::About => self.render_about_page(),
+            Route::NotFound => self.render_404_page(),
+        }
+    }
+    
+    fn render_home_page(&self) -> Node<Msg> {
+        node! {
+            <div style="text-align: center; padding: 40px;">
+                <h1 style="color: #333; margin-bottom: 20px;">{text("Welcome to Sauron Demo")}</h1>
+                <p style="color: #666; margin-bottom: 30px; font-size: 18px;">
+                    {text("A Rust WebAssembly application with routing")}
+                </p>
+                <div style="display: flex; gap: 20px; justify-content: center;">
+                    <button class="nav-button" on_click=|_| Msg::NavigateTo(Route::Counter)>
+                        {text("Try Counter →")}
+                    </button>
+                    <button class="nav-button" on_click=|_| Msg::NavigateTo(Route::Cats)>
+                        {text("Browse Cats →")}
+                    </button>
+                </div>
+            </div>
+        }
+    }
+    
+    fn render_counter_page(&self) -> Node<Msg> {
+        node! {
+            <div>
+                <h2 style="text-align: center; margin-bottom: 30px; color: #333;">
+                    {text("Interactive Counter")}
+                </h2>
                 <div class="button-row">
                     <input type="button"
                         value="+"
@@ -215,6 +322,18 @@ impl Application for App {
                             Msg::DivideByZero
                         }
                     />
+                </div>
+            </div>
+        }
+    }
+    
+    fn render_cats_page(&self) -> Node<Msg> {
+        node! {
+            <div>
+                <h2 style="text-align: center; margin-bottom: 30px; color: #333;">
+                    {text("Infinite Cat Browser")}
+                </h2>
+                <div class="button-row">
                     <input type="button"
                         value={
                             if self.cat_loading {
@@ -269,7 +388,63 @@ impl Application for App {
                         }
                     }
                 </div>
-            </main>
+            </div>
+        }
+    }
+    
+    fn render_about_page(&self) -> Node<Msg> {
+        node! {
+            <div style="text-align: center; padding: 40px;">
+                <h1 style="color: #333; margin-bottom: 20px;">{text("About This App")}</h1>
+                <div style="color: #666; line-height: 1.6; max-width: 600px; margin: 0 auto;">
+                    <p style="margin-bottom: 20px;">
+                        {text("This is a Rust WebAssembly application built with the Sauron framework.")}
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        {text("Features include:")}
+                    </p>
+                    <ul style="text-align: left; margin-bottom: 20px;">
+                        <li>{text("Client-side routing")}</li>
+                        <li>{text("Interactive counter with various operations")}</li>
+                        <li>{text("Infinite cat image preloading")}</li>
+                        <li>{text("Modern UI with glass-morphism design")}</li>
+                        <li>{text("Responsive layout")}</li>
+                    </ul>
+                    <p>
+                        {text("Built with 🦀 Rust and compiled to WebAssembly for high performance.")}
+                    </p>
+                </div>
+            </div>
+        }
+    }
+    
+    fn render_404_page(&self) -> Node<Msg> {
+        node! {
+            <div style="text-align: center; padding: 40px;">
+                <h1 style="color: #ff6b6b; margin-bottom: 20px; font-size: 72px;">{text("404")}</h1>
+                <h2 style="color: #333; margin-bottom: 20px;">{text("Page Not Found")}</h2>
+                <p style="color: #666; margin-bottom: 30px;">
+                    {text("The page you're looking for doesn't exist.")}
+                </p>
+                <button class="nav-button" on_click=|_| Msg::NavigateTo(Route::Home)>
+                    {text("← Go Home")}
+                </button>
+            </div>
+        }
+    }
+}
+
+impl Application for App {
+    type MSG = Msg;
+
+    fn view(&self) -> Node<Msg> {
+        node! {
+            <div>
+                {self.render_navigation()}
+                <main>
+                    {self.render_current_page()}
+                </main>
+            </div>
         }
     }
 
@@ -397,6 +572,15 @@ impl Application for App {
                 self.is_preloading_next_batch = false;
                 self.next_batch_urls.clear();
                 self.next_batch_loaded_count = 0;
+            },
+            Msg::NavigateTo(route) => {
+                console::log_1(&format!("Navigating to: {:?}", route).into());
+                self.navigate_to(route.clone());
+                self.current_route = route;
+            },
+            Msg::UrlChanged(route) => {
+                console::log_1(&format!("URL changed to: {:?}", route).into());
+                self.current_route = route;
             },
         }
         Cmd::none()

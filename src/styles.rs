@@ -108,6 +108,35 @@ pub fn get_styles() -> Vec<String> {
             align_items: "center",
             gap: px(5),
             margin: format!("{} 0", px(8)),
+        },
+
+        ".nav-button":{
+            background: "linear-gradient(45deg, #4f46e5, #6366f1)",
+            color: "white",
+            border: "none",
+            padding: format!("{} {}", px(12), px(20)),
+            border_radius: px(8),
+            font_size: px(14),
+            font_weight: "600",
+            cursor: "pointer",
+            transition: "all 0.3s ease",
+            box_shadow: "0 2px 8px rgba(79, 70, 229, 0.3)",
+        },
+
+        ".nav-button:hover":{
+            background: "linear-gradient(45deg, #6366f1, #8b5cf6)",
+            transform: "translateY(-2px)",
+            box_shadow: "0 4px 12px rgba(79, 70, 229, 0.4)",
+        },
+
+        ".nav-button.active":{
+            background: "linear-gradient(45deg, #f59e0b, #f97316)",
+            box_shadow: "0 2px 8px rgba(245, 158, 11, 0.3)",
+        },
+
+        ".nav-button.active:hover":{
+            background: "linear-gradient(45deg, #f97316, #ea580c)",
+            box_shadow: "0 4px 12px rgba(245, 158, 11, 0.4)",
         }
     }]
 }

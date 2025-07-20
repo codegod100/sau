@@ -9,4 +9,4 @@ crate-type = ["cdylib"]
 [dependencies]
 sauron = "0.61.0"
 js-sys = "0.3"
-web-sys = { version = "0.3", features = ["HtmlImageElement", "Document", "Window"] }
+web-sys = { version = "0.3", features = ["HtmlImageElement", "Document", "Window", "History", "Location", "PopStateEvent", "EventTarget"] }
