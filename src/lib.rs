@@ -263,7 +263,7 @@ impl Application for App {
                         } else {
                             node! {
                                 <div style="color: #666; font-size: 16px;">
-                                    {text("Click to preload 5 cat images!")}
+                                    {text("Click to preload 10 cat images!")}
                                 </div>
                             }
                         }
@@ -309,9 +309,9 @@ impl Application for App {
                     self.cat_loading = true;
                     self.images_loaded_count = 0;
                     
-                    // Generate 5 unique cat URLs with timestamps
+                    // Generate 10 unique cat URLs with timestamps
                     let mut urls = Vec::new();
-                    for i in 0..5 {
+                    for i in 0..10 {
                         let timestamp = js_sys::Date::now() as u64 + i;
                         urls.push(format!("https://cataas.com/cat?t={}", timestamp));
                     }
@@ -336,7 +336,7 @@ impl Application for App {
                         
                         // Generate next batch of URLs
                         self.next_batch_urls.clear();
-                        for i in 0..5 {
+                        for i in 0..10 {
                             let timestamp = js_sys::Date::now() as u64 + self.total_cats_ever_loaded as u64 + i + 1000;
                             self.next_batch_urls.push(format!("https://cataas.com/cat?t={}", timestamp));
                         }
