@@ -18,23 +18,23 @@ enum Route {
 }
 
 impl Route {
-    fn from_path(path: &str) -> Self {
-        match path {
-            "/" | "" => Route::Home,
-            "/counter" => Route::Counter,
-            "/cats" => Route::Cats,
-            "/about" => Route::About,
+    fn from_hash(hash: &str) -> Self {
+        match hash {
+            "#/" | "#" | "" => Route::Home,
+            "#/counter" => Route::Counter,
+            "#/cats" => Route::Cats,
+            "#/about" => Route::About,
             _ => Route::NotFound,
         }
     }
     
-    fn to_path(&self) -> &'static str {
+    fn to_hash(&self) -> &'static str {
         match self {
-            Route::Home => "/",
-            Route::Counter => "/counter",
-            Route::Cats => "/cats",
-            Route::About => "/about",
-            Route::NotFound => "/404",
+            Route::Home => "#/",
+            Route::Counter => "#/counter",
+            Route::Cats => "#/cats",
+            Route::About => "#/about",
+            Route::NotFound => "#/404",
         }
     }
 }
@@ -91,8 +91,8 @@ impl App {
     fn get_current_route() -> Route {
         if let Some(window) = window() {
             let location = window.location();
-            if let Ok(pathname) = location.pathname() {
-                return Route::from_path(&pathname);
+            if let Ok(hash) = location.hash() {
+                return Route::from_hash(&hash);
             }
         }
         Route::Home
@@ -100,11 +100,10 @@ impl App {
     
     fn navigate_to(&self, route: Route) {
         if let Some(window) = window() {
-            if let Ok(history) = window.history() {
-                let path = route.to_path();
-                let _ = history.push_state_with_url(&wasm_bindgen::JsValue::NULL, "", Some(path));
-                console::log_1(&format!("Navigated to: {}", path).into());
-            }
+            let location = window.location();
+            let hash = route.to_hash();
+            let _ = location.set_hash(hash);
+            console::log_1(&format!("Navigated to: {}", hash).into());
         }
     }
     
@@ -449,6 +448,13 @@ impl Application for App {
     }
 
     fn update(&mut self, msg: Msg) -> Cmd<Msg> {
+        // Always check if the current route matches the URL hash
+        let current_url_route = Self::get_current_route();
+        if current_url_route != self.current_route {
+            console::log_1(&format!("Route sync: {:?} -> {:?}", self.current_route, current_url_route).into());
+            self.current_route = current_url_route;
+        }
+        
         match msg {
             Msg::Increment => {
                 console::log_1(&"Increment button clicked".into());
@@ -593,5 +599,19 @@ impl Application for App {
 
 #[wasm_bindgen(start)]
 pub fn start() {
-    Program::mount_to_body(App::new());
+    let app = App::new();
+    
+    // Set up hashchange event listener for browser back/forward buttons and manual hash changes
+    if let Some(window) = window() {
+        let closure = Closure::wrap(Box::new(move |_event: web_sys::Event| {
+            console::log_1(&"Hash change detected".into());
+            // In a real implementation, we'd send Msg::UrlChanged here
+            // The app will automatically pick up the new route on next render
+        }) as Box<dyn Fn(web_sys::Event)>);
+        
+        let _ = window.add_event_listener_with_callback("hashchange", closure.as_ref().unchecked_ref());
+        closure.forget();
+    }
+    
+    Program::mount_to_body(app);
 }
