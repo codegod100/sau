@@ -151,6 +151,93 @@ pub fn get_styles() -> Vec<String> {
         ".nav-button.active:hover":{
             background: "linear-gradient(45deg, #f97316, #ea580c)",
             box_shadow: "0 4px 12px rgba(245, 158, 11, 0.4)",
+        },
+
+        ".game-card":{
+            background: "rgba(255, 255, 255, 0.9)",
+            border_radius: px(15),
+            padding: px(20),
+            box_shadow: "0 8px 25px rgba(0, 0, 0, 0.1)",
+            backdrop_filter: "blur(10px)",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+        },
+
+        ".game-button":{
+            background: "linear-gradient(45deg, #4f46e5, #6366f1)",
+            color: "white",
+            border: "none",
+            padding: format!("{} {}", px(10), px(16)),
+            border_radius: px(8),
+            font_size: px(14),
+            font_weight: "600",
+            cursor: "pointer",
+            transition: "all 0.3s ease",
+            box_shadow: "0 2px 8px rgba(79, 70, 229, 0.3)",
+            margin: px(2),
+        },
+
+        ".game-button:hover":{
+            background: "linear-gradient(45deg, #6366f1, #8b5cf6)",
+            transform: "translateY(-1px)",
+            box_shadow: "0 4px 12px rgba(79, 70, 229, 0.4)",
+        },
+
+        ".small-button":{
+            background: "linear-gradient(45deg, #10b981, #059669)",
+            color: "white",
+            border: "none",
+            padding: format!("{} {}", px(6), px(10)),
+            border_radius: px(6),
+            font_size: px(12),
+            font_weight: "600",
+            cursor: "pointer",
+            transition: "all 0.2s ease",
+            box_shadow: "0 1px 4px rgba(16, 185, 129, 0.3)",
+            margin: px(1),
+            min_width: px(32),
+            height: px(28),
+        },
+
+        ".small-button:hover":{
+            background: "linear-gradient(45deg, #059669, #047857)",
+            transform: "translateY(-1px)",
+            box_shadow: "0 2px 8px rgba(16, 185, 129, 0.4)",
+        },
+
+        ".memory-card":{
+            width: px(60),
+            height: px(60),
+            font_size: px(24),
+            border: "none",
+            border_radius: px(8),
+            cursor: "pointer",
+            transition: "all 0.3s ease",
+            box_shadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+            font_weight: "bold",
+        },
+
+        ".memory-card:hover":{
+            transform: "scale(1.05)",
+            box_shadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+        },
+
+        ".memory-card:disabled":{
+            cursor: "not-allowed",
+            transform: "none",
+        },
+
+        "input[type='number']":{
+            font_family: "inherit",
+            font_size: px(14),
+            font_weight: "600",
+            transition: "all 0.3s ease",
+            box_shadow: "0 1px 4px rgba(0, 0, 0, 0.1)",
+        },
+
+        "input[type='number']:focus":{
+            outline: "none",
+            border_color: "#4f46e5",
+            box_shadow: "0 0 0 2px rgba(79, 70, 229, 0.2)",
         }
     }]
 }
