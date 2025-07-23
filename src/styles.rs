@@ -87,25 +87,31 @@ pub fn get_styles() -> Vec<String> {
         },
 
         ".image-container":{
-            flex: "1",
+            flex: "1 1 0%",
             display: "flex",
             flex_direction: "column",
             justify_content: "center",
             align_items: "center",
-            min_height: px(400),
-            max_height: px(450),
+            width: "100%",
+            aspect_ratio: "4/3",
+            max_width: "100%",
+            max_height: "350px",
+            min_height: "200px",
             overflow: "hidden",
             margin: format!("{} 0", px(10)),
+            box_sizing: "border-box",
+            background: "#fff",
         },
 
         ".cat-image":{
+            display: "block",
             max_width: "100%",
             max_height: "100%",
-            width: "auto",
-            height: "auto",
             object_fit: "contain",
+            object_position: "center center",
             border_radius: px(15),
             box_shadow: "0 8px 25px rgba(0, 0, 0, 0.1)",
+            background: "#fff",
         },
 
         ".button-row":{
