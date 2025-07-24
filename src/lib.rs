@@ -6,7 +6,6 @@ use web_sys::{HtmlImageElement, window};
 use wasm_bindgen::closure::Closure;
 use wasm_bindgen::JsCast;
 
-mod styles;
 mod games;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -266,25 +265,25 @@ impl App {
     
     fn render_navigation(&self) -> Node<Msg> {
         node! {
-            <nav style="background: #333; padding: 15px; margin-bottom: 20px;">
-                <div style="display: flex; gap: 20px; justify-content: center;">
-                    <button class={if self.current_route == Route::Home { "nav-button active" } else { "nav-button" }}
+            <nav class="bg-gray-800 px-5 py-3 mb-4 mx-auto mt-2.5" style="width: min(500px, calc(100vw - 20px)); border-radius: 15px 15px 0 0;">
+                <div class="flex gap-2 justify-center flex-wrap items-center">
+                    <button class={if self.current_route == Route::Home { "btn-gradient-orange text-white border-0 px-4 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-300 shadow-lg min-h-11 touch-manipulation" } else { "btn-gradient-blue text-white border-0 px-4 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-300 shadow-lg min-h-11 touch-manipulation hover:-translate-y-0.5" }}
                         on_click=|_| Msg::NavigateTo(Route::Home)>
                         {text("Home")}
                     </button>
-                    <button class={if self.current_route == Route::Counter { "nav-button active" } else { "nav-button" }}
+                    <button class={if self.current_route == Route::Counter { "btn-gradient-orange text-white border-0 px-4 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-300 shadow-lg min-h-11 touch-manipulation" } else { "btn-gradient-blue text-white border-0 px-4 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-300 shadow-lg min-h-11 touch-manipulation hover:-translate-y-0.5" }}
                         on_click=|_| Msg::NavigateTo(Route::Counter)>
                         {text("Counter")}
                     </button>
-                    <button class={if self.current_route == Route::Cats { "nav-button active" } else { "nav-button" }}
+                    <button class={if self.current_route == Route::Cats { "btn-gradient-orange text-white border-0 px-4 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-300 shadow-lg min-h-11 touch-manipulation" } else { "btn-gradient-blue text-white border-0 px-4 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-300 shadow-lg min-h-11 touch-manipulation hover:-translate-y-0.5" }}
                         on_click=|_| Msg::NavigateTo(Route::Cats)>
                         {text("Cats")}
                     </button>
-                    <button class={if self.current_route == Route::Games { "nav-button active" } else { "nav-button" }}
+                    <button class={if self.current_route == Route::Games { "btn-gradient-orange text-white border-0 px-4 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-300 shadow-lg min-h-11 touch-manipulation" } else { "btn-gradient-blue text-white border-0 px-4 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-300 shadow-lg min-h-11 touch-manipulation hover:-translate-y-0.5" }}
                         on_click=|_| Msg::NavigateTo(Route::Games)>
                         {text("Games")}
                     </button>
-                    <button class={if self.current_route == Route::About { "nav-button active" } else { "nav-button" }}
+                    <button class={if self.current_route == Route::About { "btn-gradient-orange text-white border-0 px-4 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-300 shadow-lg min-h-11 touch-manipulation" } else { "btn-gradient-blue text-white border-0 px-4 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-300 shadow-lg min-h-11 touch-manipulation hover:-translate-y-0.5" }}
                         on_click=|_| Msg::NavigateTo(Route::About)>
                         {text("About")}
                     </button>
@@ -306,19 +305,19 @@ impl App {
     
     fn render_home_page(&self) -> Node<Msg> {
         node! {
-            <div style="text-align: center; padding: 40px;">
-                <h1 style="color: #333; margin-bottom: 20px;">{text("Welcome to Sauron Demo")}</h1>
-                <p style="color: #666; margin-bottom: 30px; font-size: 18px;">
+            <div class="text-center py-10">
+                <h1 class="text-gray-800 mb-5">{text("Welcome to Sauron Demo")}</h1>
+                <p class="text-gray-600 mb-8 text-lg">
                     {text("A Rust WebAssembly application with routing")}
                 </p>
-                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
-                    <button class="nav-button" on_click=|_| Msg::NavigateTo(Route::Counter)>
+                <div class="flex gap-5 justify-center flex-wrap">
+                    <button class="btn-gradient-blue text-white border-0 px-4 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-300 shadow-lg min-h-11 touch-manipulation hover:-translate-y-0.5" on_click=|_| Msg::NavigateTo(Route::Counter)>
                         {text("Try Counter →")}
                     </button>
-                    <button class="nav-button" on_click=|_| Msg::NavigateTo(Route::Cats)>
+                    <button class="btn-gradient-blue text-white border-0 px-4 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-300 shadow-lg min-h-11 touch-manipulation hover:-translate-y-0.5" on_click=|_| Msg::NavigateTo(Route::Cats)>
                         {text("Browse Cats →")}
                     </button>
-                    <button class="nav-button" on_click=|_| Msg::NavigateTo(Route::Games)>
+                    <button class="btn-gradient-blue text-white border-0 px-4 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-300 shadow-lg min-h-11 touch-manipulation hover:-translate-y-0.5" on_click=|_| Msg::NavigateTo(Route::Games)>
                         {text("Play Games →")}
                     </button>
                 </div>
@@ -329,50 +328,50 @@ impl App {
     fn render_counter_page(&self) -> Node<Msg> {
         node! {
             <div>
-                <h2 style="text-align: center; margin-bottom: 30px; color: #333;">
+                <h2 class="text-center mb-8 text-gray-800">
                     {text("Interactive Counter")}
                 </h2>
-                <div class="button-row">
-                    <input type="button"
-                        value="+"
+                <div class="flex gap-2 justify-center flex-wrap items-center my-2">
+                    <button class="counter-button"
                         on_click=|_| {
                             Msg::Increment
-                        }
-                    />
-                    <button class="count" on_click=|_|{Msg::Reset} >{text(self.count)}</button>
-                    <input type="button"
-                        value="-"
+                        }>
+                        {text("+")}
+                    </button>
+                    <button class="count-display" on_click=|_|{Msg::Reset} >{text(self.count)}</button>
+                    <button class="counter-button"
                         on_click=|_| {
                             Msg::Decrement
-                        }
-                    />
-                    <input type="button"
-                        value="×2"
+                        }>
+                        {text("-")}
+                    </button>
+                    <button class="counter-button"
                         on_click=|_| {
                             Msg::Double
-                        }
-                    />
-                    <input type="button"
-                        value="÷2"
+                        }>
+                        {text("×2")}
+                    </button>
+                    <button class="counter-button"
                         on_click=|_| {
                             Msg::Halve
-                        }
-                    />
+                        }>
+                        {text("÷2")}
+                    </button>
                 </div>
                 
-                <div class="button-row">
-                    <input type="button"
-                        value="💥"
+                <div class="flex gap-2 justify-center flex-wrap items-center my-2">
+                    <button class="counter-button"
                         on_click=|_| {
                             Msg::Panic
-                        }
-                    />
-                    <input type="button"
-                        value="÷0"
+                        }>
+                        {text("💥")}
+                    </button>
+                    <button class="counter-button"
                         on_click=|_| {
                             Msg::DivideByZero
-                        }
-                    />
+                        }>
+                        {text("÷0")}
+                    </button>
                 </div>
             </div>
         }
@@ -381,25 +380,23 @@ impl App {
     fn render_cats_page(&self) -> Node<Msg> {
         node! {
             <div>
-                <h2 style="text-align: center; margin-bottom: 30px; color: #333;">
+                <h2 class="text-center mb-8 text-gray-800">
                     {text("Infinite Cat Browser")}
                 </h2>
-                <div class="button-row">
-                    <input type="button"
-                        value={
-                            if self.cat_loading {
-                                "Loading..."
-                            } else if self.cat_urls.is_empty() {
-                                "🐱 Load Cats"
-                            } else {
-                                "🐱 Next Cat"
-                            }
-                        }
+                <div class="flex gap-2 justify-center flex-wrap items-center my-2">
+                    <button class="counter-button"
                         disabled={self.cat_loading}
                         on_click=|_| {
                             Msg::FetchCat
-                        }
-                    />
+                        }>
+                        {text(if self.cat_loading {
+                            "Loading..."
+                        } else if self.cat_urls.is_empty() {
+                            "🐱 Load Cats"
+                        } else {
+                            "🐱 Next Cat"
+                        })}
+                    </button>
                 </div>
 
                 <div class="image-container">
@@ -409,7 +406,7 @@ impl App {
                             node! {
                                 <div>
                                     <img class="cat-image" src={current_url} />
-                                    <div style="margin-top: 15px; color: #666; font-size: 14px;">
+                                    <div class="mt-4 text-gray-600 text-sm">
                                         {text(format!("Cat {} of {}{}", 
                                             self.current_cat_index + 1, 
                                             self.cat_urls.len(),
@@ -421,18 +418,18 @@ impl App {
                         } else if self.cat_loading {
                             node! {
                                 <div>
-                                    <div style="color: #666; margin-bottom: 20px; font-size: 16px;">
+                                    <div class="text-gray-600 mb-5 text-base">
                                         {text(format!("Preloading cats... ({}/{})", self.images_loaded_count, self.cat_urls.len()))}
                                     </div>
-                                    <div style="width: 250px; height: 12px; background: #e0e0e0; border-radius: 6px; margin: 0 auto;">
-                                        <div style={format!("width: {}%; height: 100%; background: #4f46e5; border-radius: 6px; transition: width 0.3s ease;", 
+                                    <div class="w-60 h-3 bg-gray-300 rounded-md mx-auto">
+                                        <div class={format!("h-full bg-blue-600 rounded-md transition-all duration-300 ease-in-out")} style={format!("width: {}%", 
                                             if self.cat_urls.is_empty() { 0 } else { (self.images_loaded_count * 100) / self.cat_urls.len() })}></div>
                                     </div>
                                 </div>
                             }
                         } else {
                             node! {
-                                <div style="color: #666; font-size: 16px;">
+                                <div class="text-gray-600 text-base">
                                     {text("Click to preload 10 cat images!")}
                                 </div>
                             }
@@ -498,7 +495,7 @@ impl Application for App {
         node! {
             <div>
                 {self.render_navigation()}
-                <main>
+                <main class="glass-card p-4 shadow-xl text-center h-auto flex flex-col justify-start gap-4 box-border mx-auto" style="width: min(500px, calc(100vw - 20px)); border-radius: 0 0 15px 15px; margin-top: -1rem;">
                     {self.render_current_page()}
                 </main>
             </div>
@@ -673,7 +670,7 @@ impl Application for App {
     }
 
     fn stylesheet() -> Vec<String> {
-        styles::get_styles()
+        vec![]
     }
 }
 

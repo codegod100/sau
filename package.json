@@ -1,0 +1,14 @@
+{
+  "name": "sauron-tailwind-app",
+  "version": "0.1.0",
+  "description": "Sauron WebAssembly app with Tailwind CSS",
+  "scripts": {
+    "build-css": "bunx tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+    "build-css-prod": "bunx tailwindcss -i ./src/input.css -o ./dist/output.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32"
+  }
+}

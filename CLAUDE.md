@@ -1,0 +1,2 @@
+- Use bun instead of npm
+- We have an automatic build script running in background

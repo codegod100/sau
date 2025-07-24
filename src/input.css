@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  }
+}
+
+@layer components {
+  .gradient-bg {
+    background: linear-gradient(135deg, theme('colors.primary-start') 0%, theme('colors.primary-end') 100%);
+  }
+  
+  .glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .btn-gradient-red {
+    background: linear-gradient(45deg, theme('colors.button-red-start'), theme('colors.button-red-end'));
+  }
+  
+  .btn-gradient-blue {
+    background: linear-gradient(45deg, theme('colors.button-blue-start'), theme('colors.button-blue-end'));
+  }
+  
+  .btn-gradient-green {
+    background: linear-gradient(45deg, theme('colors.button-green-start'), theme('colors.button-green-end'));
+  }
+  
+  .btn-gradient-orange {
+    background: linear-gradient(45deg, theme('colors.button-orange-start'), theme('colors.button-orange-end'));
+  }
+  
+  .counter-button {
+    @apply btn-gradient-red text-white border-0 px-4 py-3 rounded-lg text-base font-semibold cursor-pointer transition-all duration-300 shadow-lg min-w-11 min-h-11 touch-manipulation mx-1.5;
+  }
+  
+  .counter-button:hover {
+    @apply -translate-y-0.5 shadow-xl;
+  }
+  
+  .counter-button:active {
+    @apply translate-y-0 shadow-lg;
+  }
+  
+  .count-display {
+    @apply text-lg px-5 py-3 mx-1.5 border-2 border-blue-600 rounded-xl bg-white text-blue-600 cursor-pointer font-bold transition-all duration-300 shadow-lg min-w-16 min-h-11 touch-manipulation;
+  }
+  
+  .count-display:hover {
+    @apply bg-blue-600 text-white scale-105 shadow-xl;
+  }
+  
+  .game-button {
+    @apply btn-gradient-blue text-white border-0 px-5 py-3 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-300 shadow-lg my-1 min-h-11 touch-manipulation;
+  }
+  
+  .game-button:hover {
+    @apply bg-gradient-to-r from-indigo-600 to-purple-600 -translate-y-px shadow-xl;
+  }
+  
+  .small-button {
+    @apply btn-gradient-green text-white border-0 px-3 py-2 rounded-md text-xs font-semibold cursor-pointer transition-all duration-200 shadow-md mx-0.5 min-w-10 min-h-11 touch-manipulation;
+  }
+  
+  .small-button:hover {
+    @apply bg-gradient-to-r from-emerald-700 to-green-800 -translate-y-px shadow-lg;
+  }
+  
+  .game-card {
+    @apply glass-card rounded-2xl p-5 shadow-xl border border-white/20;
+  }
+  
+  .memory-card {
+    @apply w-12 h-12 md:w-16 md:h-16 text-base md:text-xl border-0 rounded-lg cursor-pointer transition-all duration-300 shadow-lg font-bold min-w-11 min-h-11 touch-manipulation;
+  }
+  
+  .memory-card:hover {
+    @apply scale-105 shadow-xl;
+  }
+  
+  .memory-card:disabled {
+    @apply cursor-not-allowed scale-100;
+  }
+  
+  .image-container {
+    @apply flex-shrink-0 flex flex-col justify-center items-center bg-white rounded-xl p-2.5 my-2.5 box-border overflow-hidden mx-auto;
+    width: min(400px, calc(100vw - 100px));
+    height: min(400px, calc(100vw - 100px));
+    min-width: 250px;
+    min-height: 250px;
+    max-width: 400px;
+    max-height: 400px;
+    aspect-ratio: 1;
+  }
+  
+  .cat-image {
+    @apply block rounded-lg shadow-xl;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+}

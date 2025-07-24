@@ -270,12 +270,12 @@ impl GameState {
         MSG: From<GameMsg> + 'static
     {
         node! {
-            <div style="padding: 20px;">
-                <h2 style="text-align: center; margin-bottom: 30px; color: #333;">
+            <div>
+                <h2 class="text-center mb-8 text-gray-800">
                     {text("Mini Games Collection")}
                 </h2>
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto;">
+                <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 max-w-6xl mx-auto">
                     {self.render_rock_paper_scissors()}
                     {self.render_number_guessing()}
                     {self.render_memory_game()}
@@ -290,14 +290,14 @@ impl GameState {
     {
         node! {
             <div class="game-card">
-                <h3 style="text-align: center; margin-bottom: 20px; color: #4f46e5;">
+                <h3 class="text-center mb-5 text-blue-600">
                     {text("🪨 Rock Paper Scissors ✂️")}
                 </h3>
-                <div style="text-align: center; margin-bottom: 15px;">
-                    <div style="font-size: 18px; margin-bottom: 10px;">
+                <div class="text-center mb-4">
+                    <div class="text-lg mb-2.5">
                         {text(format!("Score: You {} - {} Computer", self.rps_score.0, self.rps_score.1))}
                     </div>
-                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
+                    <div class="flex gap-2 justify-center mb-4 flex-wrap">
                         <button class="game-button" on_click=|_| MSG::from(GameMsg::RockPaperScissorsPlay("rock".to_string()))>
                             {text("🪨 Rock")}
                         </button>
@@ -311,8 +311,8 @@ impl GameState {
                     {
                         if let (Some(player), Some(computer), Some(result)) = (&self.rps_player_choice, &self.rps_computer_choice, &self.rps_result) {
                             node! {
-                                <div style="background: rgba(255,255,255,0.8); padding: 15px; border-radius: 8px;">
-                                    <div style="margin-bottom: 10px;">
+                                <div class="bg-white/80 p-4 rounded-lg">
+                                    <div class="mb-2.5">
                                         {text(format!("You played: {}", match player.as_str() {
                                             "rock" => "🪨 Rock",
                                             "paper" => "📄 Paper",
@@ -320,7 +320,7 @@ impl GameState {
                                             _ => player
                                         }))}
                                     </div>
-                                    <div style="margin-bottom: 10px;">
+                                    <div class="mb-2.5">
                                         {text(format!("Computer played: {}", match computer.as_str() {
                                             "rock" => "🪨 Rock",
                                             "paper" => "📄 Paper",
@@ -328,14 +328,14 @@ impl GameState {
                                             _ => computer
                                         }))}
                                     </div>
-                                    <div style="font-weight: bold; color: #4f46e5;">
+                                    <div class="font-bold text-blue-600">
                                         {text(result)}
                                     </div>
                                 </div>
                             }
                         } else {
                             node! {
-                                <div style="color: #666;">
+                                <div class="text-gray-600">
                                     {text("Choose your move!")}
                                 </div>
                             }
@@ -353,27 +353,27 @@ impl GameState {
         
         node! {
             <div class="game-card">
-                <h3 style="text-align: center; margin-bottom: 20px; color: #4f46e5;">
+                <h3 class="text-center mb-5 text-blue-600">
                     {text("🎯 Number Guessing Game")}
                 </h3>
-                <div style="text-align: center;">
-                    <div style="margin-bottom: 15px;">
+                <div class="text-center">
+                    <div class="mb-4">
                         {text(format!("Attempts: {}", self.guess_attempts))}
                     </div>
-                    <div style="margin-bottom: 15px; color: #666;">
+                    <div class="mb-4 text-gray-600">
                         {text(&self.guess_message)}
                     </div>
                     {
                         if !self.guess_game_over {
                             node! {
                                 <div>
-                                    <div style="display: flex; gap: 8px; justify-content: center; align-items: center; margin-bottom: 15px; flex-wrap: wrap;">
+                                    <div class="flex gap-2 justify-center items-center mb-4 flex-wrap">
                                         <input type="number" 
                                             min="1" 
                                             max="100" 
                                             placeholder="1-100" 
                                             value={&self.guess_input}
-                                            style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 80px; text-align: center;"
+                                            class="p-2 border border-gray-300 rounded w-20 text-center"
                                             on_input=|event| {
                                                 if let Some(input) = event.event.target() {
                                                     if let Ok(input_element) = input.dyn_into::<HtmlInputElement>() {
@@ -391,10 +391,10 @@ impl GameState {
                                             {text("Guess!")}
                                         </button>
                                     </div>
-                                    <div style="color: #666; margin-bottom: 15px; font-size: 14px;">
+                                    <div class="text-gray-600 mb-4 text-sm">
                                         {text("Quick options:")}
                                     </div>
-                                    <div style="display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;">
+                                    <div class="flex gap-1.5 justify-center flex-wrap">
                                         <button class="small-button" on_click=|_| MSG::from(GameMsg::GuessNumber(25))>{text("25")}</button>
                                         <button class="small-button" on_click=|_| MSG::from(GameMsg::GuessNumber(50))>{text("50")}</button>
                                         <button class="small-button" on_click=|_| MSG::from(GameMsg::GuessNumber(75))>{text("75")}</button>
@@ -421,12 +421,12 @@ impl GameState {
         MSG: From<GameMsg> + 'static
     {
         node! {
-            <div class="game-card" style="grid-column: 1 / -1;">
-                <h3 style="text-align: center; margin-bottom: 20px; color: #4f46e5;">
+            <div class="game-card col-span-full">
+                <h3 class="text-center mb-5 text-blue-600">
                     {text("🧠 Memory Card Game")}
                 </h3>
-                <div style="text-align: center;">
-                    <div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 20px;">
+                <div class="text-center">
+                    <div class="flex gap-5 justify-center mb-5">
                         <div>{text(format!("Moves: {}", self.memory_moves))}</div>
                         <div>{text(format!("Matches: {}/{}", self.memory_matches, 8))}</div>
                     </div>
@@ -440,7 +440,7 @@ impl GameState {
                         } else if self.memory_game_over {
                             node! {
                                 <div>
-                                    <div style="font-size: 24px; color: #4f46e5; margin-bottom: 20px;">
+                                    <div class="text-2xl text-blue-600 mb-5">
                                         {text(format!("🎉 You won in {} moves!", self.memory_moves))}
                                     </div>
                                     <button class="game-button" on_click=|_| MSG::from(GameMsg::ResetMemoryGame)>
@@ -463,7 +463,7 @@ impl GameState {
     {
         node! {
             <div>
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 400px; margin: 0 auto 20px;">
+                <div class="grid grid-cols-4 gap-2 max-w-80 mx-auto mb-5 px-2.5">
                     {self.render_memory_card::<MSG>(0)}
                     {self.render_memory_card::<MSG>(1)}
                     {self.render_memory_card::<MSG>(2)}
@@ -494,24 +494,23 @@ impl GameState {
     {
         if index >= self.memory_cards.len() {
             return node! {
-                <button class="memory-card" style="background: #f0f0f0; color: #999;" disabled=true>
+                <button class="memory-card bg-gray-200 text-gray-500" disabled=true>
                     {text("?")}
                 </button>
             };
         }
         
         let (emoji, revealed, matched) = &self.memory_cards[index];
-        let card_style = if *revealed || *matched { 
-            "background: #4f46e5; color: white;" 
+        let card_classes = if *revealed || *matched { 
+            "memory-card bg-blue-600 text-white" 
         } else { 
-            "background: #ddd; color: #ddd;" 
+            "memory-card bg-gray-300 text-gray-300" 
         };
         let card_text = if *revealed || *matched { emoji.clone() } else { "?".to_string() };
         
         node! {
             <button 
-                class="memory-card"
-                style={card_style}
+                class={card_classes}
                 disabled={*revealed || *matched}
                 on_click=move |_| MSG::from(GameMsg::MemoryCardClick(index))>
                 {text(card_text)}

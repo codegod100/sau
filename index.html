@@ -2,11 +2,13 @@
 <html>
     <head>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
         <title>Counter</title>
+        <link rel="stylesheet" href="./dist/output.css">
         <script type="module">
             import init from "./pkg/counter.js";
             await init().catch(console.error);
         </script>
     </head>
-    <body></body>
+    <body class="gradient-bg min-h-screen px-5 py-2.5 m-0 overflow-x-hidden overflow-y-auto flex items-start justify-center"></body>
 </html>
