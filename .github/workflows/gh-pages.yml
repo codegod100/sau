@@ -37,7 +37,7 @@ jobs:
       - name: Copy static files
         run: |
           mkdir -p dist
-          cp -r index.html pkg dist/
+          cp -r index.html pkg tailwind dist/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

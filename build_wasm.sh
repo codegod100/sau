@@ -9,10 +9,10 @@ set -e
 build_css() {
     echo "Building Tailwind CSS..."
     if [ "$1" = "--watch" ]; then
-        npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch &
+        npx tailwindcss -i ./src/input.css -o ./tailwind/output.css --watch &
         CSS_PID=$!
     else
-        npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify
+        npx tailwindcss -i ./src/input.css -o ./tailwind/output.css --minify
     fi
 }
 
