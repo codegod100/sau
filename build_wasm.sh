@@ -16,10 +16,10 @@ build_css() {
     fi
 }
 
-# Check if bun dependencies are installed
+# Check if npm dependencies are installed
 if [ ! -d "node_modules" ]; then
-    echo "Installing bun dependencies..."
-    npx install
+    echo "Installing npm dependencies..."
+    npm install
 fi
 
 if [ "$1" = "--watch" ]; then
